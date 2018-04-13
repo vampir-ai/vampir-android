@@ -17,9 +17,9 @@ class LoginFragment: BaseFragment() {
 
     override fun setUp() {
         btn_login.onClick {
-//            loginViewModel.login(Login(et_username.getString(), et_password.getString()))
+            loginViewModel.login(Login(et_username.getString(), et_password.getString()))
             //TODO Remove in PROD
-            baseActivity.startActivity<LinkAccountsActivity>()
+//            baseActivity.startActivity<LinkAccountsActivity>()
         }
 
         val loadingDialog = baseActivity.dialog {

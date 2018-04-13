@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 class App: BaseApplication(appModule)
 
 val appModule = applicationContext {
-    val retrofit = Retrofit.Builder().logged("http://matthewwhitaker.me")
+    val retrofit = Retrofit.Builder().logged("http://vampirai.ryanberger.me")
 
     //APIs
     provide { retrofit.create(AccountApi::class.java) }

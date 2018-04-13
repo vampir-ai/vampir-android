@@ -35,5 +35,6 @@ dependencies {
 
     implementation 'com.github.Sub6Resources:Utilities:1.2.0'
     implementation 'com.github.florent37:awesomebar:1.0.3'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 
 }
