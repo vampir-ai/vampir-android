@@ -1,3 +1,5 @@
 package com.sub6resources.vampir.models
 
-data class EncryptedCredentials(val encryptedCredentials: String)
+import com.google.gson.annotations.SerializedName
+
+data class EncryptedCredentials(@SerializedName("message") val encryptedCredentials: String)

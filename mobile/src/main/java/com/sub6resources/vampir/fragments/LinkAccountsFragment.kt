@@ -18,10 +18,11 @@ class LinkAccountsFragment: BaseFragment() {
 
         btn_linkhistorical.onClick {
 //            baseActivity.sharedPreferences.edit {
-//                putBoolean("historicalLinked", true)
+//                putBoolean("historicalLinked", false)
 //            }
             //TODO Remove in PROD
-            baseActivity.startActivity<MainActivity>()
+//            baseActivity.startActivity<MainActivity>()
+            addFragment(LinkHistoricalFragment())
         }
 
         btn_linkrealtime.onClick {

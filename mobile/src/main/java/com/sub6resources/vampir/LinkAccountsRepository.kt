@@ -8,4 +8,8 @@ class LinkAccountsRepository(private val linkAccountsApi: LinkAccountsApi) {
     fun encryptLogin(login: Login) = makeNetworkRequest(linkAccountsApi.encrypt(login)) {
 
     }
+
+    fun OAuth(unit: Unit) = makeNetworkRequest(linkAccountsApi.OAuth()) {
+
+    }
 }

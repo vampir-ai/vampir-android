@@ -24,10 +24,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="46dp"
                 android:layout_marginLeft="49dp"
-                android:layout_marginStart="59dp"
+                android:layout_marginStart="49dp"
                 android:layout_marginTop="9dp"
                 android:elevation="4dp"
-                android:src="@mipmap/ic_launcher_round" />
+                android:src="@mipmap/ic_launcher_round"
+                android:contentDescription="Vampïr" />
 
         </com.github.florent37.awesomebar.AwesomeBar>
 
