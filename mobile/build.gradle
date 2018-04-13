@@ -32,4 +32,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     wearApp project(':wear')
     implementation 'com.google.android.gms:play-services-wearable:+'
+
+    implementation 'com.github.Sub6Resources:Utilities:1.2.0'
+
 }
