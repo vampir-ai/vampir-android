@@ -1,6 +1,8 @@
 package com.sub6resources.vampir
 
 import android.util.Log
+import com.firebase.jobdispatcher.FirebaseJobDispatcher
+import com.firebase.jobdispatcher.GooglePlayDriver
 import com.sub6resources.utilities.BaseApplication
 import com.sub6resources.utilities.sharedPreferences
 import com.sub6resources.vampir.api.AccountApi
@@ -21,6 +23,9 @@ import org.koin.dsl.module.applicationContext
 import retrofit2.Retrofit
 
 class App: BaseApplication(appModule) {
+
+    val firebaseJobDispatcher by lazy { FirebaseJobDispatcher(GooglePlayDriver(this)) }
+
     override fun onCreate() {
         super.onCreate()
         SharedPref.sharedPreferences = sharedPreferences

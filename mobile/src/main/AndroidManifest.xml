@@ -22,6 +22,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".LinkAccountsActivity" />
+
+        <!-- Services -->
+        <service
+            android:exported="false"
+            android:name=".services.GlucoseMonitorService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

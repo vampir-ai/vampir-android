@@ -14,11 +14,8 @@ import com.sub6resources.utilities.sharedPreferences
 import com.sub6resources.vampir.BasicNetworkState
 import com.sub6resources.vampir.R
 import com.sub6resources.vampir.models.EncryptedCredentials
-import com.sub6resources.vampir.models.Prediction
 import com.sub6resources.vampir.viewmodels.PredictionViewModel
 import kotlinx.android.synthetic.main.fragment_chart.*
-import com.github.mikephil.charting.components.YAxis
-
 
 
 class ChartFragment: BaseFragment() {
@@ -27,29 +24,25 @@ class ChartFragment: BaseFragment() {
     val predictionViewModel by getViewModel<PredictionViewModel>()
 
     override fun setUp() {
-        chart.description.isEnabled = false
-        chart.setDrawGridBackground(false)
-        chart.setTouchEnabled(true)
 
-        chart.setViewPortOffsets(10f, 0f, 10f, 0f)
+
+
 
         chart.data = getLineData(listOf(0f))
         chart.legend.isEnabled = false
 
-        chart.xAxis.isEnabled = false
-        chart.isScaleYEnabled = false
-        chart.isScaleXEnabled = false
+        chart.axisRight.isEnabled = false
+        chart.axisLeft.axisMinimum = 50f
+        chart.axisLeft.setDrawGridLines(false)
+        chart.axisLeft.isEnabled = false
+        val bottomAxis = chart.xAxis
+        bottomAxis.setDrawAxisLine(false)
+        bottomAxis.setDrawGridLines(false)
+        bottomAxis.textColor = Color.WHITE
+        bottomAxis.labelCount = chart.data.entryCount
+        //Font?
 
-        val left = chart.axisLeft
-        left.setDrawLabels(false) // no axis labels
-        left.setDrawAxisLine(false) // no axis line
-        left.setDrawGridLines(false) // no grid lines
-        left.setDrawZeroLine(true) // draw a zero line
-        chart.axisRight.isEnabled = false // no right axis
-
-
-
-        chart.axisLeft.setDrawZeroLine(true)
+        chart.legend.isEnabled = false
 
 
         chart.onClick {
@@ -65,7 +58,7 @@ class ChartFragment: BaseFragment() {
         predictionViewModel.predictedData.observe(this, Observer {
             when(it) {
                 is BasicNetworkState.Success -> {
-                    chart.data =  getLineData(it.data.predictions.map { it.value.toFloat() })
+                    chart.data =  getLineData(it.data.predictions)
                     chart.invalidate()
                     loadingDialog.hide()
 
@@ -82,13 +75,13 @@ class ChartFragment: BaseFragment() {
         })
     }
 
-    fun getLineData(values: List<Float>): LineData {
+    private fun getLineData(values: List<Float>): LineData {
 
         val yVals = values.mapIndexed { i, value ->
             Entry(i * 5f, value)
         }
 
-        val set1 = LineDataSet(yVals, "DataSet 1")
+        val set1 = LineDataSet(yVals, "Blood Glucose Level")
 
         set1.lineWidth = 2.75f
         set1.circleRadius = 5f
@@ -99,8 +92,11 @@ class ChartFragment: BaseFragment() {
         set1.setDrawFilled(true)
         set1.highlightLineWidth = 0f
         set1.setDrawValues(true)
-        set1.valueTextSize = 16f
+        set1.valueTextSize = 15f
         set1.valueTextColor = Color.WHITE
+        set1.setDrawHighlightIndicators(false)
+        set1.cubicIntensity = 0.1f
+        set1.mode = LineDataSet.Mode.CUBIC_BEZIER
 
         return LineData(set1)
 
