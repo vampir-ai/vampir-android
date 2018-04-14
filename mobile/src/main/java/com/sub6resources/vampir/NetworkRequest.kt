@@ -8,6 +8,7 @@ import android.util.Log
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import retrofit2.HttpException
 
 sealed class BasicNetworkState<T> {
     class Loading<T> : BasicNetworkState<T>()
@@ -34,7 +35,14 @@ class ExtrasHandler<T> {
     var insertFunction: ((d: T) -> Unit)? = { Log.e("NETWORKEXTRAS", "You haven't implemented an insert function!!!") }
         private set
 
-    var errorFunction: ((t: Throwable) -> BasicNetworkState.Error<T>) = { BasicNetworkState.Error("Unknown Error") }
+    var errorFunction: ((t: Throwable) -> BasicNetworkState.Error<T>) = {
+        if(it is HttpException) {
+            BasicNetworkState.Error("Error: ${it.code()}: ${it.message}")
+        } else {
+            BasicNetworkState.Error("Unknown Error ${it.message}")
+        }
+
+    }
         private set
 
     fun onError(error: (t: Throwable) -> BasicNetworkState.Error<T>) {
