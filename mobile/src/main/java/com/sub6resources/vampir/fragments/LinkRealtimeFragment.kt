@@ -17,11 +17,6 @@ class LinkRealtimeFragment: BaseFragment() {
 
         btn_login.onClick {
             linkAccountsViewModel.encrypt(Login(et_dexcom_username.getString(), et_dexcom_password.getString()))
-            //TODO Remove in PROD
-//            baseActivity.sharedPreferences.edit {
-//                putString("encryptedRealtimeCredentials", "...")
-//            }
-//            popFragment()
         }
 
         val loadingDialog = baseActivity.dialog {

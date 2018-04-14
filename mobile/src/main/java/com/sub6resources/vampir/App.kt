@@ -1,13 +1,14 @@
 package com.sub6resources.vampir
 
-import android.content.Context
 import android.util.Log
 import com.sub6resources.utilities.BaseApplication
-import com.sub6resources.utilities.logged
 import com.sub6resources.utilities.sharedPreferences
 import com.sub6resources.vampir.api.AccountApi
 import com.sub6resources.vampir.api.LinkAccountsApi
 import com.sub6resources.vampir.api.PredictionApi
+import com.sub6resources.vampir.repository.AccountRepository
+import com.sub6resources.vampir.repository.LinkAccountsRepository
+import com.sub6resources.vampir.repository.PredictionRepository
 import com.sub6resources.vampir.viewmodels.LinkAccountsViewModel
 import com.sub6resources.vampir.viewmodels.LoginViewModel
 import com.sub6resources.vampir.viewmodels.PredictionViewModel
@@ -16,7 +17,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.architecture.ext.viewModel
-import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module.applicationContext
 import retrofit2.Retrofit
 
@@ -61,8 +61,9 @@ fun Retrofit.Builder.loggedWithAuthToken(baseUrl: String, tokenSharedPreferences
                                     header("Accept", "application/json")
                                     val token = SharedPref.sharedPreferences.getString(tokenSharedPreferencesKey, "")
                                     if (token.isNotEmpty()) {
-                                        Log.d("Vampïr", "REQUEST HEADER: Authorization $token")
-                                        header("Authorization","Authorization $token")
+                                        Log.d("Vampïr", "REQUEST HEADER: Authorization, $token")
+                                        header("Authorization", token)
+
                                     } else {
                                         Log.d("Vampïr", "No Authorization")
                                     }

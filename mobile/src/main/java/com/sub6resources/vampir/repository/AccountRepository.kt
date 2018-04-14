@@ -1,6 +1,7 @@
-package com.sub6resources.vampir
+package com.sub6resources.vampir.repository
 
 import com.sub6resources.vampir.api.AccountApi
+import com.sub6resources.vampir.makeNetworkRequest
 import com.sub6resources.vampir.models.Login
 import com.sub6resources.vampir.models.User
 

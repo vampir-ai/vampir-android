@@ -3,6 +3,7 @@ package com.sub6resources.vampir.fragments
 import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -13,8 +14,12 @@ import com.sub6resources.utilities.sharedPreferences
 import com.sub6resources.vampir.BasicNetworkState
 import com.sub6resources.vampir.R
 import com.sub6resources.vampir.models.EncryptedCredentials
+import com.sub6resources.vampir.models.Prediction
 import com.sub6resources.vampir.viewmodels.PredictionViewModel
 import kotlinx.android.synthetic.main.fragment_chart.*
+import com.github.mikephil.charting.components.YAxis
+
+
 
 class ChartFragment: BaseFragment() {
     override val fragLayout = R.layout.fragment_chart
@@ -28,27 +33,28 @@ class ChartFragment: BaseFragment() {
 
         chart.setViewPortOffsets(10f, 0f, 10f, 0f)
 
-        chart.data = getLineData()
+        chart.data = getLineData(listOf(0f))
         chart.legend.isEnabled = false
 
-        chart.axisLeft.isEnabled = false
-        chart.axisLeft.spaceTop = 0f
-        chart.axisRight.isEnabled = false
-        chart.axisLeft.spaceBottom = 0f
-
-
         chart.xAxis.isEnabled = false
+        chart.isScaleYEnabled = false
+        chart.isScaleXEnabled = false
+
+        val left = chart.axisLeft
+        left.setDrawLabels(false) // no axis labels
+        left.setDrawAxisLine(false) // no axis line
+        left.setDrawGridLines(false) // no grid lines
+        left.setDrawZeroLine(true) // draw a zero line
+        chart.axisRight.isEnabled = false // no right axis
+
+
+
+        chart.axisLeft.setDrawZeroLine(true)
+
 
         chart.onClick {
             val credentials = baseActivity.sharedPreferences.getString("encryptedRealtimeCredentials", "")
-            if(credentials.isNotEmpty())
-                predictionViewModel.predict(EncryptedCredentials(credentials))
-            else {
-                //TODO Remove in PROD
-                baseActivity.dialog {
-                    content("CREDENTIALS ARE EMPTY!!!!")
-                }.show()
-            }
+            predictionViewModel.predict(EncryptedCredentials(credentials))
         }
 
         val loadingDialog = baseActivity.dialog {
@@ -59,10 +65,13 @@ class ChartFragment: BaseFragment() {
         predictionViewModel.predictedData.observe(this, Observer {
             when(it) {
                 is BasicNetworkState.Success -> {
+                    chart.data =  getLineData(it.data.predictions.map { it.value.toFloat() })
+                    chart.invalidate()
                     loadingDialog.hide()
 
                 }
                 is BasicNetworkState.Error -> {
+                    Log.e("Vampïr", "ERROR! " + it.message)
                     loadingDialog.hide()
 
                 }
@@ -73,9 +82,11 @@ class ChartFragment: BaseFragment() {
         })
     }
 
-    fun getLineData(): LineData {
+    fun getLineData(values: List<Float>): LineData {
 
-        val yVals =listOf(Entry(0f, 100f), Entry(1f, 110f), Entry(2f, 100f), Entry(3f, 95f), Entry(4f, 85f))
+        val yVals = values.mapIndexed { i, value ->
+            Entry(i * 5f, value)
+        }
 
         val set1 = LineDataSet(yVals, "DataSet 1")
 
@@ -84,11 +95,12 @@ class ChartFragment: BaseFragment() {
         set1.circleColors = listOf(Color.WHITE)
         set1.circleHoleRadius = 0f
         set1.color = Color.WHITE
-//        set1.highLightColor = Color.WHITE
         set1.fillColor = ContextCompat.getColor(baseActivity, R.color.colorPrimaryDark)
         set1.setDrawFilled(true)
         set1.highlightLineWidth = 0f
-        set1.setDrawValues(false)
+        set1.setDrawValues(true)
+        set1.valueTextSize = 16f
+        set1.valueTextColor = Color.WHITE
 
         return LineData(set1)
 

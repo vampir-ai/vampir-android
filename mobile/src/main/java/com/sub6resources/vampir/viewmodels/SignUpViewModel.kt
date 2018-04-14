@@ -3,7 +3,7 @@ package com.sub6resources.vampir.viewmodels
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.sub6resources.utilities.switchMap
-import com.sub6resources.vampir.AccountRepository
+import com.sub6resources.vampir.repository.AccountRepository
 import com.sub6resources.vampir.models.User
 
 class SignUpViewModel(accountRepository: AccountRepository): ViewModel() {

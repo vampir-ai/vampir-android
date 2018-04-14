@@ -17,11 +17,6 @@ class LinkAccountsFragment: BaseFragment() {
 
 
         btn_linkhistorical.onClick {
-//            baseActivity.sharedPreferences.edit {
-//                putBoolean("historicalLinked", false)
-//            }
-            //TODO Remove in PROD
-//            baseActivity.startActivity<MainActivity>()
             addFragment(LinkHistoricalFragment())
         }
 
@@ -29,13 +24,18 @@ class LinkAccountsFragment: BaseFragment() {
             addFragment(LinkRealtimeFragment())
         }
 
-
+        checkConnections()
 
 
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+
+        checkConnections()
+    }
+
+    fun checkConnections() {
         if(baseActivity.sharedPreferences.getString("encryptedRealtimeCredentials", "").isNotEmpty()) {
             realtime_linked_checkbox.isChecked = true
             btn_linkrealtime.disable()
@@ -56,5 +56,8 @@ class LinkAccountsFragment: BaseFragment() {
             btn_linkhistorical.text = "Link Historical"
         }
 
+        if(baseActivity.sharedPreferences.getString("encryptedRealtimeCredentials", "").isNotEmpty() && baseActivity.sharedPreferences.getBoolean("historicalLinked", false)) {
+            baseActivity.startActivity<MainActivity>()
+        }
     }
 }
