@@ -8,5 +8,5 @@ import retrofit2.http.POST
 
 interface PredictionApi {
     @POST("/api/predict/")
-    fun predictBloodSugar(@Body encryptedCredentials: EncryptedCredentials): Single<PredictionResponse>
+    fun predictBloodSugar(@Body encryptedCredentials: EncryptedCredentials, @Body hour: Int): Single<PredictionResponse>
 }

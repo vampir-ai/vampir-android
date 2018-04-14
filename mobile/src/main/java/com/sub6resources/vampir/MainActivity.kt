@@ -26,8 +26,8 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
             tag = "GlucoseMonitorService"
             isRecurring = true
             lifetime = Lifetime.FOREVER
-            trigger = Trigger.executionWindow(200, 300)
-            setReplaceCurrent(false)
+            trigger = Trigger.executionWindow(60, 90)
+            setReplaceCurrent(true)
             retryStrategy = RetryStrategy.DEFAULT_EXPONENTIAL
             setConstraints(Constraint.ON_ANY_NETWORK)
         }.build()

@@ -5,5 +5,5 @@ import com.sub6resources.vampir.makeNetworkRequest
 import com.sub6resources.vampir.models.EncryptedCredentials
 
 class PredictionRepository(private val predictionApi: PredictionApi) {
-    fun predictBloodSugar(encryptedCredentials: EncryptedCredentials) = makeNetworkRequest(predictionApi.predictBloodSugar(encryptedCredentials))
+    fun predictBloodSugar(encryptedCredentials: EncryptedCredentials, hour: Int) = makeNetworkRequest(predictionApi.predictBloodSugar(encryptedCredentials, hour))
 }

@@ -1,18 +1,15 @@
 package com.sub6resources.vampir.services
 
-import android.arch.lifecycle.Observer
 import android.util.Log
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
 import com.sub6resources.utilities.sharedPreferences
-import com.sub6resources.vampir.BasicNetworkState
 import com.sub6resources.vampir.api.PredictionApi
 import com.sub6resources.vampir.loggedWithAuthToken
-import com.sub6resources.vampir.makeNetworkRequest
 import com.sub6resources.vampir.models.EncryptedCredentials
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.async
 import retrofit2.Retrofit
+import java.util.*
 
 class GlucoseMonitorService: JobService() {
     override fun onStartJob(job: JobParameters): Boolean {
@@ -24,13 +21,22 @@ class GlucoseMonitorService: JobService() {
             val encryptedCredentials = EncryptedCredentials(sharedPreferences.getString("encryptedRealtimeCredentials", ""))
             if(encryptedCredentials.encryptedCredentials.isNotEmpty()) {
                 Log.d("Vampïr", "Asking le server for prediction")
-                val predictionResponse = predictApi.predictBloodSugar(encryptedCredentials)
-                predictionResponse.observeOn(Schedulers.newThread()).doOnSuccess {
-                    Log.d("Vampïr", "Success! ${it.predictions}")
-                }.doOnError {
-                    Log.d("Vampïr", "Error :( ${it.message}")
-                }
+                val predictionResponse = predictApi.predictBloodSugar(encryptedCredentials, Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+                predictionResponse.subscribe(
+                        {
+                            Log.d("Vampïr", "Success! ${it.predictions}")
+                            jobFinished(job, false)
+                        },
+                        {
+                            Log.d("Vampïr", "Failure :( ${it.message}")
+                            jobFinished(job, false)
+                        }
+                )
+            } else {
+                Log.d("Vampïr", "Done with background job")
+                jobFinished(job, false)
             }
+
 
         }
         return true
