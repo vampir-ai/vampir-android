@@ -1,9 +1,14 @@
 package com.sub6resources.vampir.services
 
+import android.app.Notification
 import android.util.Log
+import br.com.goncalves.pugnotification.notification.PugNotification
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
 import com.sub6resources.utilities.sharedPreferences
+import com.sub6resources.utilities.startActivity
+import com.sub6resources.vampir.MainActivity
+import com.sub6resources.vampir.R
 import com.sub6resources.vampir.api.PredictionApi
 import com.sub6resources.vampir.loggedWithAuthToken
 import com.sub6resources.vampir.models.EncryptedCredentials
@@ -25,6 +30,17 @@ class GlucoseMonitorService: JobService() {
                 predictionResponse.subscribe(
                         {
                             Log.d("Vampïr", "Success! ${it.predictions}")
+                            PugNotification.with(applicationContext)
+                                    .load()
+                                    .title("Vampïr -- ${it.predictions[0]}")
+                                    .tag("vampir")
+                                    .message("Current blood glucose level")
+                                    .largeIcon(R.mipmap.ic_launcher_foreground)
+                                    .smallIcon(R.mipmap.ic_launcher_foreground)
+                                    .ongoing(true)
+                                    .flags(Notification.DEFAULT_ALL)
+                                    .simple()
+                                    .build()
                             jobFinished(job, false)
                         },
                         {

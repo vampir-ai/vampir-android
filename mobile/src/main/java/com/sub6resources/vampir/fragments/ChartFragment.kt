@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.util.Log
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -44,7 +45,7 @@ class ChartFragment: BaseFragment() {
         bottomAxis.setDrawAxisLine(false)
         bottomAxis.setDrawGridLines(false)
         bottomAxis.textColor = Color.WHITE
-        bottomAxis.labelCount = chart.data.entryCount
+        bottomAxis.labelCount = 4
         bottomAxis.isGranularityEnabled = true
         bottomAxis.granularity = 5f
         bottomAxis.axisMinimum = -.2f

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Settings"
+    <item android:id="@+id/settings"
+        android:title="Settings"
         android:icon="@android:drawable/ic_delete"/>
-    <item android:title="Legal"
+    <item android:id="@+id/legal"
+        android:title="Legal"
         android:icon="@android:drawable/ic_delete"/>
-    <item android:title="Log Out"
+    <item android:id="@+id/logout"
+        android:title="Log Out"
         android:icon="@android:drawable/ic_delete"/>
 </menu>

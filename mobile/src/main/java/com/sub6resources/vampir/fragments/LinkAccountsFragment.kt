@@ -46,7 +46,7 @@ class LinkAccountsFragment: BaseFragment() {
             btn_linkrealtime.text = "Link Realtime"
         }
 
-        if(baseActivity.sharedPreferences.getBoolean("historicalLinked", false)) {
+        if(!baseActivity.sharedPreferences.getBoolean("historicalLinked", false)) {
             historical_linked_checkbox.isChecked = true
             btn_linkhistorical.disable()
             btn_linkhistorical.text = "Historical Account Linked"
@@ -56,7 +56,7 @@ class LinkAccountsFragment: BaseFragment() {
             btn_linkhistorical.text = "Link Historical"
         }
 
-        if(baseActivity.sharedPreferences.getString("encryptedRealtimeCredentials", "").isNotEmpty() && baseActivity.sharedPreferences.getBoolean("historicalLinked", false)) {
+        if(baseActivity.sharedPreferences.getString("encryptedRealtimeCredentials", "").isNotEmpty() && !baseActivity.sharedPreferences.getBoolean("historicalLinked", false)) {
             baseActivity.startActivity<MainActivity>()
         }
     }
