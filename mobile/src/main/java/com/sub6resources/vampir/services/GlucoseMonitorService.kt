@@ -18,10 +18,10 @@ class GlucoseMonitorService: JobService() {
             val retrofit = Retrofit.Builder().loggedWithAuthToken("http://vampirai.ryanberger.me", "token")
             val predictApi = retrofit.create(PredictionApi::class.java)
 
-            val encryptedCredentials = EncryptedCredentials(sharedPreferences.getString("encryptedRealtimeCredentials", ""))
+            val encryptedCredentials = EncryptedCredentials(sharedPreferences.getString("encryptedRealtimeCredentials", ""), Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
             if(encryptedCredentials.encryptedCredentials.isNotEmpty()) {
                 Log.d("Vampïr", "Asking le server for prediction")
-                val predictionResponse = predictApi.predictBloodSugar(encryptedCredentials, Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+                val predictionResponse = predictApi.predictBloodSugar(encryptedCredentials)
                 predictionResponse.subscribe(
                         {
                             Log.d("Vampïr", "Success! ${it.predictions}")

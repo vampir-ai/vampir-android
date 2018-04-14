@@ -4,9 +4,10 @@ import com.sub6resources.vampir.models.EncryptedCredentials
 import com.sub6resources.vampir.models.PredictionResponse
 import io.reactivex.Single
 import retrofit2.http.Body
+import retrofit2.http.Field
 import retrofit2.http.POST
 
 interface PredictionApi {
     @POST("/api/predict/")
-    fun predictBloodSugar(@Body encryptedCredentials: EncryptedCredentials, @Body hour: Int): Single<PredictionResponse>
+    fun predictBloodSugar(@Body encryptedCredentials: EncryptedCredentials): Single<PredictionResponse>
 }

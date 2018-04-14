@@ -9,7 +9,7 @@ import java.util.*
 
 class PredictionViewModel(private val predictionRepository: PredictionRepository): ViewModel() {
     val encryptedCredentials = MutableLiveData<EncryptedCredentials>()
-    val predictedData = encryptedCredentials.switchMap { predictionRepository.predictBloodSugar(it, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) }
+    val predictedData = encryptedCredentials.switchMap { predictionRepository.predictBloodSugar(it) }
 
     fun predict(encryptedCred: EncryptedCredentials) {
         encryptedCredentials.value = encryptedCred
