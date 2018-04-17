@@ -29,8 +29,6 @@ class ChartFragment: BaseFragment() {
     override fun setUp() {
 
 
-
-
         chart.data = getLineData(listOf(0f))
         chart.legend.isEnabled = false
 
@@ -41,18 +39,19 @@ class ChartFragment: BaseFragment() {
         chart.description.isEnabled = false
         chart.extraBottomOffset = 10f
 
-        val bottomAxis = chart.xAxis
-        bottomAxis.setDrawAxisLine(false)
-        bottomAxis.setDrawGridLines(false)
-        bottomAxis.textColor = Color.WHITE
-        bottomAxis.labelCount = 4
-        bottomAxis.isGranularityEnabled = true
-        bottomAxis.granularity = 5f
-        bottomAxis.axisMinimum = -.2f
-        bottomAxis.axisMaximum = 15.2f
-        bottomAxis.position = XAxis.XAxisPosition.BOTTOM
-        bottomAxis.setAvoidFirstLastClipping(true)
-        bottomAxis.textSize = 15f
+        chart.xAxis.apply {
+            setDrawAxisLine(false)
+            setDrawGridLines(false)
+            textColor = Color.WHITE
+            labelCount = 4
+            isGranularityEnabled = true
+            granularity = 5f
+            axisMinimum = -.2f
+            axisMaximum = 20.2f
+            position = XAxis.XAxisPosition.BOTTOM
+            setAvoidFirstLastClipping(true)
+            textSize = 15f
+        }
 
         chart.legend.isEnabled = false
         val credentials = baseActivity.sharedPreferences.getString("encryptedRealtimeCredentials", "")
@@ -71,6 +70,7 @@ class ChartFragment: BaseFragment() {
             when(it) {
                 is BasicNetworkState.Success -> {
                     chart.data =  getLineData(it.data.predictions)
+                    chart.xAxis.axisMaximum = 5*(it.data.predictions.size-1) + 0.2f
                     chart.invalidate()
                     current_time.text = "${it.data.predictions[0]} mg/dL"
                     loadingDialog.hide()
