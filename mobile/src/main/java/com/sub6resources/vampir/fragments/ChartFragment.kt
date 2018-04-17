@@ -72,6 +72,7 @@ class ChartFragment: BaseFragment() {
                 is BasicNetworkState.Success -> {
                     chart.data =  getLineData(it.data.predictions)
                     chart.invalidate()
+                    current_time.text = "${it.data.predictions[0]} mg/dL"
                     loadingDialog.hide()
 
                 }
