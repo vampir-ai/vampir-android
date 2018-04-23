@@ -14,4 +14,8 @@ class PredictionViewModel(private val predictionRepository: PredictionRepository
     fun predict(encryptedCred: EncryptedCredentials) {
         encryptedCredentials.value = encryptedCred
     }
+
+    fun predictFromValue(value: Float, hour: Int) {
+        //TODO
+    }
 }

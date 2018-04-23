@@ -24,6 +24,15 @@ class LinkAccountsFragment: BaseFragment() {
             addFragment(LinkRealtimeFragment())
         }
 
+        txt_nodexcom.onClick {
+            baseActivity.sharedPreferences.edit {
+                putString("encryptedRealtimeCredentials", "---")
+                putBoolean("historicalLinked", true)
+            }
+
+            baseActivity.startActivity<MainActivity>()
+        }
+
         checkConnections()
 
 

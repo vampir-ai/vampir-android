@@ -28,10 +28,9 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
             tag = "GlucoseMonitorService"
             isRecurring = true
             lifetime = Lifetime.FOREVER
-            trigger = Trigger.executionWindow(60, 90)
+            trigger = Trigger.executionWindow(100, 200)
             setReplaceCurrent(true)
             retryStrategy = RetryStrategy.DEFAULT_EXPONENTIAL
-            setConstraints(Constraint.ON_ANY_NETWORK)
         }.build()
 
         (application as App).firebaseJobDispatcher.mustSchedule(glucoseJob)

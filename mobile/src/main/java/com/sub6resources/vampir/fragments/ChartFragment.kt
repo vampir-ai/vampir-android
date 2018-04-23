@@ -4,7 +4,7 @@ import android.arch.lifecycle.Observer
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.util.Log
-import com.github.mikephil.charting.components.LimitLine
+import android.widget.ImageView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -18,6 +18,7 @@ import com.sub6resources.vampir.R
 import com.sub6resources.vampir.models.EncryptedCredentials
 import com.sub6resources.vampir.viewmodels.PredictionViewModel
 import kotlinx.android.synthetic.main.fragment_chart.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -51,14 +52,28 @@ class ChartFragment: BaseFragment() {
             position = XAxis.XAxisPosition.BOTTOM
             setAvoidFirstLastClipping(true)
             textSize = 15f
+            setValueFormatter { value, axis ->
+                if (value == 0f) {
+                    "Now"
+                } else {
+                    val df = SimpleDateFormat("hh:mm", Locale.US)
+                    df.format(Calendar.getInstance().apply { add(Calendar.MINUTE, value.toInt()) }.time)
+                }
+            }
         }
 
         chart.legend.isEnabled = false
-        val credentials = baseActivity.sharedPreferences.getString("encryptedRealtimeCredentials", "")
-        predictionViewModel.predict(EncryptedCredentials(credentials, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
+        predict()
 
         chart.onClick {
-            predictionViewModel.predict(EncryptedCredentials(credentials, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
+            predict()
+        }
+
+        baseActivity.findViewById<ImageView>(R.id.vampir_logo).onClick {
+            chart.data =  getLineData(listOf(120f, 128f, 137f, 140f, 141f))
+            chart.xAxis.axisMaximum = 5*(chart.data.entryCount - 1) + 0.2f
+            chart.invalidate()
+            current_time.text = "${120f} mg/dL"
         }
 
         val loadingDialog = baseActivity.dialog {
@@ -116,5 +131,20 @@ class ChartFragment: BaseFragment() {
 
         return LineData(set1)
 
+    }
+
+    private fun predict() {
+        val credentials = baseActivity.sharedPreferences.getString("encryptedRealtimeCredentials", "")
+        if(credentials == "---") {
+            baseActivity.dialog {
+                title("Enter current blood glucose level (mg/dL):")
+                input("120", current_time.text.toString().toInt().toString()) { _, input ->
+//                    predictionViewModel.predictFromValue(input.toString(), Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+                }
+                positiveText("Predict")
+            }.show()
+        } else {
+            predictionViewModel.predict(EncryptedCredentials(credentials, Calendar.getInstance().get(Calendar.HOUR_OF_DAY)))
+        }
     }
 }
