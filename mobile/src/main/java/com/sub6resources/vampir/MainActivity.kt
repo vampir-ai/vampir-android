@@ -12,8 +12,6 @@ import com.sub6resources.vampir.services.GlucoseMonitorService
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(R.layout.activity_main) {
-    override val drawer: DrawerLayout by lazy {drawer_layout}
-    override val sideNav: NavigationView by lazy {side_nav}
     override val fragmentTargets = R.id.fragmentContainer
     override val landingFragment = ChartFragment()
 
@@ -41,7 +39,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
                             startActivity<SettingsActivity>()
                         }
                         R.id.legal -> {
-                            //TODO legal
+                            startActivity<LegalActivity>()
                         }
                         R.id.logout -> {
                             sharedPreferences.edit {
