@@ -6,11 +6,11 @@ import android.util.Log
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.sub6resources.utilities.BaseFragment
+import com.sub6resources.utilities.SharedPrefs.sharedPreferences
 import com.sub6resources.utilities.dialog
 import com.sub6resources.utilities.edit
 import com.sub6resources.vampir.BasicNetworkState
 import com.sub6resources.vampir.R
-import com.sub6resources.vampir.SharedPref.sharedPreferences
 import com.sub6resources.vampir.models.CSRFResponse
 import com.sub6resources.vampir.viewmodels.LinkAccountsViewModel
 import kotlinx.android.synthetic.main.fragment_linkhistorical.*
@@ -29,7 +29,7 @@ class LinkHistoricalFragment: BaseFragment() {
         }
         loadingDialog.show()
 
-        linkAccountsViewModel.OAuth()
+        linkAccountsViewModel.oAuth()
 
         linkAccountsViewModel.csrfResponse.observe(this, Observer {
             when(it) {

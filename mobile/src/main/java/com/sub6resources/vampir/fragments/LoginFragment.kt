@@ -1,7 +1,6 @@
 package com.sub6resources.vampir.fragments
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import com.sub6resources.utilities.*
 import com.sub6resources.vampir.BasicNetworkState
 import com.sub6resources.vampir.LinkAccountsActivity
@@ -13,13 +12,11 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class LoginFragment: BaseFragment() {
     override val fragLayout = R.layout.fragment_login
 
-    val loginViewModel by getViewModel<LoginViewModel>()
+    private val loginViewModel by getViewModel<LoginViewModel>()
 
     override fun setUp() {
         btn_login.onClick {
             loginViewModel.login(Login(et_username.getString(), et_password.getString()))
-            //TODO Remove in PROD
-//            baseActivity.startActivity<LinkAccountsActivity>()
         }
 
         val loadingDialog = baseActivity.dialog {

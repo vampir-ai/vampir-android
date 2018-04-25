@@ -13,10 +13,10 @@ class PredictionRepository(private val predictionApi: PredictionApi) {
                 if(it.code() == 401 || it.code() == 500) {
                     BasicNetworkState.Error("Incorrect username or password")
                 } else {
-                    BasicNetworkState.Error("Unknown error: " + it.code())
+                    BasicNetworkState.Error("Unknown error: ${it.code()}")
                 }
             } else {
-                BasicNetworkState.Error("Unknown error")
+                BasicNetworkState.Error("Unknown error: ${it.message}")
             }
         }
     }

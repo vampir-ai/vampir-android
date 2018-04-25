@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Vampïr</string>
+    <string name="realtime_linked">Realtime Account Linked</string>
+    <string name="historical_linked">Historical Account Linked</string>
+    <string name="link_realtime">Link Realtime</string>
+    <string name="link_historical">Link Historical</string>
 </resources>

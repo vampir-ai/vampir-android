@@ -8,7 +8,7 @@ import com.sub6resources.vampir.models.User
 
 class SignUpViewModel(accountRepository: AccountRepository): ViewModel() {
 
-    val signUpUser = MutableLiveData<User>()
+    private val signUpUser = MutableLiveData<User>()
     val signedUpUser = signUpUser.switchMap { accountRepository.signUp(it) }
 
     fun signUp(user: User) {

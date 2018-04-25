@@ -12,5 +12,5 @@ interface LinkAccountsApi {
     fun encrypt(@Body login: Login): Single<EncryptedCredentials>
 
     @POST("/api/oauth/")
-    fun OAuth(): Single<CSRFResponse>
+    fun oAuth(): Single<CSRFResponse>
 }

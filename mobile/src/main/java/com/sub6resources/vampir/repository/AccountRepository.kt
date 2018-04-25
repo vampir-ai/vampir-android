@@ -14,10 +14,10 @@ class AccountRepository(val accountApi: AccountApi) {
                 if(it.code() == 400) {
                     BasicNetworkState.Error("Username already taken")
                 } else {
-                    BasicNetworkState.Error("Unknown error: " + it.code())
+                    BasicNetworkState.Error("Unknown error: ${it.code()}")
                 }
             } else {
-                BasicNetworkState.Error("Unknown Error")
+                BasicNetworkState.Error("Unknown Error: ${it.message}")
             }
         }
     }
@@ -28,10 +28,10 @@ class AccountRepository(val accountApi: AccountApi) {
                 if(it.code() == 401) {
                     BasicNetworkState.Error("Incorrect username or password")
                 } else {
-                    BasicNetworkState.Error("Unknown error: " + it.code())
+                    BasicNetworkState.Error("Unknown error: ${it.code()}")
                 }
             } else {
-                BasicNetworkState.Error("Unknown error")
+                BasicNetworkState.Error("Unknown error: ${it.message}")
             }
         }
     }

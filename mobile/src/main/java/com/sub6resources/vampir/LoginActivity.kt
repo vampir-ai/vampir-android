@@ -1,7 +1,6 @@
 package com.sub6resources.vampir
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import com.sub6resources.utilities.BaseActivity
 import com.sub6resources.utilities.sharedPreferences
 import com.sub6resources.utilities.startActivity

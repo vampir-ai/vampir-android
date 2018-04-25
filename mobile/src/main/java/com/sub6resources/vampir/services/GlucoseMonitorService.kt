@@ -11,11 +11,11 @@ import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.firebase.jobdispatcher.JobParameters
 import com.firebase.jobdispatcher.JobService
+import com.sub6resources.utilities.loggedWithAuthToken
 import com.sub6resources.utilities.sharedPreferences
 import com.sub6resources.utilities.toApi
 import com.sub6resources.vampir.R
 import com.sub6resources.vampir.api.PredictionApi
-import com.sub6resources.vampir.loggedWithAuthToken
 import com.sub6resources.vampir.models.EncryptedCredentials
 import kotlinx.coroutines.experimental.async
 import retrofit2.Retrofit
@@ -26,6 +26,7 @@ class GlucoseMonitorService: JobService() {
     override fun onStartJob(job: JobParameters): Boolean {
         async {
             Log.d("Vampïr", "Glucose Monitoring...")
+
             val retrofit = Retrofit.Builder().loggedWithAuthToken("http://vampirai.ryanberger.me", "token")
             val predictApi = retrofit.create(PredictionApi::class.java)
 
@@ -46,7 +47,7 @@ class GlucoseMonitorService: JobService() {
                                     priority = Notification.PRIORITY_LOW
                                 }
                                 setOngoing(true)
-                                setShowWhen(false)
+                                setShowWhen(true)
                                 setVisibility(VISIBILITY_SECRET)
                             }.build()
 
@@ -61,18 +62,21 @@ class GlucoseMonitorService: JobService() {
                                 mNotificationManager.createNotificationChannel(channel)
                             }
 
-                            mNotificationManager.notify(42, notificationConstant)
+                            //Display persistent notification
+                            if(sharedPreferences.getBoolean("persistentNotification", false)) {
+                                mNotificationManager.notify(42, notificationConstant)
+                            } else {
+                                mNotificationManager.cancel(42)
+                            }
 
-                            it.predictions.forEachIndexed { i, prediction ->
+                            it.predictions.forEachIndexed { _, prediction ->
                                 if(prediction < sharedPreferences.getInt("notifyLow", 50) || prediction > sharedPreferences.getInt("notifyHigh", 300)) {
 
-                                    var index = i
-
-                                    index = if(prediction < sharedPreferences.getInt("notifyLow", 50)) {
+                                    val index = if(prediction < sharedPreferences.getInt("notifyLow", 50))
                                         it.predictions.indexOf(it.predictions.min())
-                                    } else {
+                                    else
                                         it.predictions.indexOf(it.predictions.max())
-                                    }
+
                                     val notification = NotificationCompat.Builder(applicationContext, "glucose_002")
                                             .setSmallIcon(R.drawable.ic_blood_drop)
                                             .setLargeIcon(BitmapFactory.decodeResource(applicationContext.resources, R.drawable.vampir_logo))

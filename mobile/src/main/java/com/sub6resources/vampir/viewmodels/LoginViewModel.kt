@@ -8,7 +8,7 @@ import com.sub6resources.vampir.models.Login
 
 class LoginViewModel(accountRepository: AccountRepository): ViewModel() {
 
-    val credentials = MutableLiveData<Login>()
+    private val credentials = MutableLiveData<Login>()
     val token = credentials.switchMap { accountRepository.login(it) }
 
     fun login(login: Login) {

@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.fragment_linkrealtime.*
 class LinkRealtimeFragment: BaseFragment() {
     override val fragLayout = R.layout.fragment_linkrealtime
 
-    val linkAccountsViewModel by lazy { getSharedViewModel<LinkAccountsViewModel>() }
-    val predictionViewModel by getViewModel<PredictionViewModel>()
+    private val linkAccountsViewModel by lazy { getSharedViewModel<LinkAccountsViewModel>() }
+    private val predictionViewModel by getViewModel<PredictionViewModel>()
 
     override fun setUp() {
 

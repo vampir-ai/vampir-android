@@ -14,7 +14,6 @@ class LinkAccountsActivity: BaseActivity(R.layout.activity_fragmentcontainer) {
         if(sharedPreferences.getString("encryptedRealtimeCredentials", "").isNotEmpty() && sharedPreferences.getBoolean("historicalLinked", false)) {
             startActivity<MainActivity>()
         }
-
         super.onCreate(savedInstanceState)
     }
 }

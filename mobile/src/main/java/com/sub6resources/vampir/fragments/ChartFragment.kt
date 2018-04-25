@@ -9,10 +9,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.sub6resources.utilities.BaseFragment
-import com.sub6resources.utilities.dialog
-import com.sub6resources.utilities.onClick
-import com.sub6resources.utilities.sharedPreferences
+import com.sub6resources.utilities.*
 import com.sub6resources.vampir.BasicNetworkState
 import com.sub6resources.vampir.R
 import com.sub6resources.vampir.models.EncryptedCredentials
@@ -25,7 +22,7 @@ import java.util.*
 class ChartFragment: BaseFragment() {
     override val fragLayout = R.layout.fragment_chart
 
-    val predictionViewModel by getViewModel<PredictionViewModel>()
+    private val predictionViewModel by getViewModel<PredictionViewModel>()
 
     override fun setUp() {
 
@@ -34,7 +31,7 @@ class ChartFragment: BaseFragment() {
         chart.legend.isEnabled = false
 
         chart.axisRight.isEnabled = false
-        chart.axisLeft.axisMinimum = 50f
+        chart.axisLeft.axisMinimum = 0f
         chart.axisLeft.setDrawGridLines(false)
         chart.axisLeft.isEnabled = false
         chart.description.isEnabled = false
@@ -52,7 +49,7 @@ class ChartFragment: BaseFragment() {
             position = XAxis.XAxisPosition.BOTTOM
             setAvoidFirstLastClipping(true)
             textSize = 15f
-            setValueFormatter { value, axis ->
+            setValueFormatter { value, _ ->
                 if (value == 0f) {
                     "Now"
                 } else {
@@ -69,9 +66,12 @@ class ChartFragment: BaseFragment() {
             predict()
         }
 
+
+
         baseActivity.findViewById<ImageView>(R.id.vampir_logo).onClick {
             chart.data =  getLineData(listOf(120f, 128f, 137f, 140f, 141f))
-            chart.xAxis.axisMaximum = 5*(chart.data.entryCount - 1) + 0.2f
+            chart.xAxis.axisMaximum = chart.data.xMax + 0.2f
+            chart.xAxis.axisMinimum = chart.data.xMin - 0.2f
             chart.invalidate()
             current_time.text = "${120f} mg/dL"
         }
@@ -84,8 +84,10 @@ class ChartFragment: BaseFragment() {
         predictionViewModel.predictedData.observe(this, Observer {
             when(it) {
                 is BasicNetworkState.Success -> {
+
                     chart.data =  getLineData(it.data.predictions)
                     chart.xAxis.axisMaximum = 5*(it.data.predictions.size-1) + 0.2f
+                    chart.xAxis.axisMinimum = chart.data.xMin - 0.2f
                     chart.invalidate()
                     current_time.text = "${it.data.predictions[0]} mg/dL"
                     loadingDialog.hide()
@@ -110,12 +112,11 @@ class ChartFragment: BaseFragment() {
         }
 
         val set1 = LineDataSet(yVals, "Blood Glucose Level")
-
         set1.apply {
             lineWidth = 2.75f
             circleRadius = 5f
             circleColors = listOf(Color.WHITE)
-            circleHoleRadius = 0f
+            setDrawCircleHole(false)
             color = Color.WHITE
             fillColor = ContextCompat.getColor(baseActivity, R.color.colorPrimaryDark)
             setDrawFilled(true)
@@ -127,10 +128,7 @@ class ChartFragment: BaseFragment() {
             cubicIntensity = 0.1f
             mode = LineDataSet.Mode.CUBIC_BEZIER
         }
-
-
         return LineData(set1)
-
     }
 
     private fun predict() {

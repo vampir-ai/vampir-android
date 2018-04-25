@@ -15,8 +15,8 @@ import java.util.*
 class SignUpFragment: BaseFragment() {
     override val fragLayout = R.layout.fragment_signup
 
-    val signUpViewModel by getViewModel<SignUpViewModel>()
-    val loginViewModel by getViewModel<LoginViewModel>()
+    private val signUpViewModel by getViewModel<SignUpViewModel>()
+    private val loginViewModel by getViewModel<LoginViewModel>()
 
     override fun setUp() {
 
