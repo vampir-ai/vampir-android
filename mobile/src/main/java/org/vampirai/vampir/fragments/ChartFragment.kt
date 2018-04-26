@@ -136,7 +136,7 @@ class ChartFragment: BaseFragment() {
         if(credentials == "---") {
             baseActivity.dialog {
                 title("Enter current blood glucose level (mg/dL):")
-                input("120", current_time.text.toString().toInt().toString()) { _, input ->
+                input("120", "") { _, input ->
 //                    predictionViewModel.predictFromValue(input.toString(), Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
                 }
                 positiveText("Predict")
